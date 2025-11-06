@@ -1,0 +1,25 @@
+# Node
+node_modules/
+npm-debug.log
+.env
+.env.local
+
+# Build
+dist/
+build/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Nakama
+backend/data/modules/*.so
+backend/data/modules/*.js.map
+*.log
+
+# Docker
+docker-compose.override.yml

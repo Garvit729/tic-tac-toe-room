@@ -1,0 +1,21 @@
+name: nakama1
+data_dir: "./data/"
+
+logger:
+  level: "DEBUG"
+
+console:
+  port: 7351
+  username: "admin"
+  password: "password"
+
+socket:
+  server_key: "defaultkey"
+  port: 7350
+
+session:
+  token_expiry_sec: 7200
+  refresh_token_expiry_sec: 86400
+
+runtime:
+  js_entrypoint: "index.js"

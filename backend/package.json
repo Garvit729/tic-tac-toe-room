@@ -1,0 +1,11 @@
+{
+  "name": "tictactoe-nakama-backend",
+  "version": "1.0.0",
+  "description": "Nakama backend for multiplayer Tic-Tac-Toe",
+  "scripts": {
+    "logs": "docker-compose logs -f nakama",
+    "restart": "docker-compose restart nakama"
+  },
+  "author": "Vaibhav",
+  "license": "MIT"
+}

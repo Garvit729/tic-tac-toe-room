@@ -1,18 +1,22 @@
-# Use official Nakama image
+# Dockerfile (replace your existing one)
 FROM heroiclabs/nakama:3.21.1
 
-# Copy your Nakama data folder (local.yml + modules)
+# Copy Nakama data folder into image (local.yml + modules)
 COPY ./data /nakama/data
 
-# Expose Nakama ports
+# Create an inline start script inside the image so we don't rely on an external file
+RUN printf '%s\n' \
+  '#!/bin/sh' \
+  'echo "---- ENV: dumping DATABASE_ADDRESS (password redacted for logs) ----"' \
+  'if [ -n "$DATABASE_ADDRESS" ]; then' \
+  '  echo "$DATABASE_ADDRESS" | sed -E "s#(postgres://[^:]+:)[^@]+(@.*)#\\\\1***REDACTED***\\\\2#"' \
+  'else' \
+  '  echo "DATABASE_ADDRESS is EMPTY"' \
+  'fi' \
+  'echo "---- now attempting migrations and server start ----"' \
+  '/nakama/nakama migrate up --database.address "$DATABASE_ADDRESS" && exec /nakama/nakama --config /nakama/data/local.yml --database.address "$DATABASE_ADDRESS"' \
+  > /start.sh && chmod +x /start.sh
+
 EXPOSE 7349 7350 7351
 
-# # Run migrations and start Nakama
-# CMD ["/bin/sh","-ecx","/nakama/nakama migrate up --database.address \"$DATABASE_ADDRESS\" && exec /nakama/nakama --config /nakama/data/local.yml --database.address \"$DATABASE_ADDRESS\""]
-
-# copy start script and make executable
-COPY ./start.sh /start.sh
-RUN chmod +x /start.sh
-
-# use start script as entrypoint
 CMD ["/bin/sh","-ecx","/start.sh"]

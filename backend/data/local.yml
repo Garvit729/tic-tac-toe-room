@@ -19,6 +19,3 @@ session:
 
 runtime:
   js_entrypoint: "index.js"
-
-database:
-  address: "postgres://tictactoe_db_rsj4_user:f5ztzifhTTxJGgJyl2Y7a0cd4PNgpefr@dpg-d46bvoodl3ps738udlmg-a.render.com:5432/tictactoe_db_rsj4"

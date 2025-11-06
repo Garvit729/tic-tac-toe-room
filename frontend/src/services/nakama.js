@@ -14,7 +14,7 @@ class NakamaService {
   init() {
     const useSSL = false; // Local development
     const serverKey = "defaultkey";
-    const host = "https://tictactoe-nakama.onrender.com";
+    const host = "tictactoe-nakama.onrender.com";
     const port = "7350";
 
     this.client = new Client(serverKey, host, port, useSSL);

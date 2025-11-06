@@ -74,23 +74,33 @@ class NakamaService {
   /**
    * Connect to WebSocket
    */
-  async connectSocket() {
-    try {
-      if (!this.session) {
-        throw new Error("Must authenticate before connecting socket");
-      }
-
-      this.socket = this.client.createSocket(false, false);
-      
-      await this.socket.connect(this.session, true);
-      
-      console.log("✅ Socket connected");
-      return { success: true };
-    } catch (error) {
-      console.error("❌ Socket connection failed:", error);
-      return { success: false, error: error.message };
+  /**
+ * Connect to WebSocket
+ */
+async connectSocket() {
+  try {
+    if (!this.session) {
+      throw new Error("Must authenticate before connecting socket");
     }
+
+    // If client was created with SSL for HTTPS pages, ensure socket uses SSL too.
+    // createSocket(useSSL, useReconnect)
+    const isPageHttps = typeof window !== "undefined" && window.location.protocol === "https:";
+    const socketUseSSL = isPageHttps ? true : false;
+
+    // useReconnect true helps with connection drops
+    this.socket = this.client.createSocket(socketUseSSL, true);
+
+    // Connect the socket with the session. The second arg 'true' enables pings/heartbeat as needed.
+    await this.socket.connect(this.session, true);
+
+    console.log("✅ Socket connected (ssl=" + socketUseSSL + ")");
+    return { success: true };
+  } catch (error) {
+    console.error("❌ Socket connection failed:", error);
+    return { success: false, error: error.message || String(error) };
   }
+}
 
     /**
    * Find or create a match

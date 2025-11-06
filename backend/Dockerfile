@@ -1,10 +1,8 @@
-# Dockerfile (replace your existing one)
 FROM heroiclabs/nakama:3.21.1
 
-# Copy Nakama data folder into image (local.yml + modules)
 COPY ./data /nakama/data
 
-# Create an inline start script inside the image so we don't rely on an external file
+# create start script inside image so we don't rely on an external file
 RUN printf '%s\n' \
   '#!/bin/sh' \
   'echo "---- ENV: dumping DATABASE_ADDRESS (password redacted for logs) ----"' \
@@ -19,4 +17,4 @@ RUN printf '%s\n' \
 
 EXPOSE 7349 7350 7351
 
-CMD ["/bin/sh","-ecx","/start.sh"]
+ENTRYPOINT ["/bin/sh","-ecx","/start.sh"]

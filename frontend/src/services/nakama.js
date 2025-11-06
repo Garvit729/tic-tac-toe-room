@@ -11,15 +11,19 @@ class NakamaService {
   /**
    * Initialize Nakama client
    */
-  init() {
-    const useSSL = false; // Local development
+ init() {
+    // Detect if site is running over HTTPS (Render)
+    const isProduction = typeof window !== "undefined" && window.location.protocol === "https:";
+
+    // Use HTTPS + port 443 on Render (no mixed content)
+    const useSSL = isProduction ? true : false;
     const serverKey = "defaultkey";
-    const host = "tictactoe-nakama.onrender.com";
-    const port = "7350";
+    const host = isProduction ? "tictactoe-nakama.onrender.com" : "localhost";
+    const port = isProduction ? "443" : "7350";
 
     this.client = new Client(serverKey, host, port, useSSL);
-    console.log("✅ Nakama client initialized");
-  }
+    console.log(`✅ Nakama client initialized -> ${host}:${port}, SSL=${useSSL}`);
+}
 
     /**
    * Authenticate user with email
